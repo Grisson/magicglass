@@ -132,7 +132,7 @@ def avg_joy_score(faces):
 
 def streams():
     print("Entry streams")
-    while not done and hasCustomer:
+    while not done:
         print("Pop processor") 
         with lock:
             if pool:
