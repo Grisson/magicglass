@@ -18,13 +18,14 @@ detected faces.
 Example:
 face_detection_camera.py --num_frames 10
 """
+
 import argparse
-import http.client, urllib.request, urllib.parse, urllib.error, base64
 
 from aiy.vision.inference import CameraInference
 from aiy.vision.models import face_detection
 from aiy.vision.annotator import Annotator
 from picamera import PiCamera
+import http.client, urllib.request, urllib.parse, urllib.error, base64
 
 done = False
 hasCustomer = False
