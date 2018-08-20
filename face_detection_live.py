@@ -179,6 +179,7 @@ def main():
         with CameraInference(face_detection.model()) as inference:
             # camera.capture_sequence(streams(), use_video_port=True)
             # print("after capture_sequence")
+            print(args.num_frames)
             for result in inference.run(args.num_frames):
                 faces = face_detection.get_faces(result)
                 # annotator.clear()
