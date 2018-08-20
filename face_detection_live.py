@@ -131,9 +131,7 @@ def avg_joy_score(faces):
 
 
 def streams():
-    print("Entry streams")
     while not done:
-        print("Pop processor") 
         with lock:
             if pool:
                 processor = pool.pop()
@@ -144,10 +142,9 @@ def streams():
             processor.event.set()
         else:
             # When the pool is starved, wait a while for it to refill
-            # time.sleep(0.1)
+            print("sleep")
+            time.sleep(0.1)
             # ignore the frame
-            pass
-    print("Leave streams")
 
 
 def main():
@@ -166,7 +163,6 @@ def main():
     with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camera:
         camera.start_preview()
         time.sleep(2)
-        camera.capture_sequence(streams(), use_video_port=True)
 
         # Annotator renders in software so use a smaller size and scale results
         # for increased performace.
@@ -182,6 +178,8 @@ def main():
                     scale_y * (y + height))
 
         with CameraInference(face_detection.model()) as inference:
+            camera.capture_sequence(streams(), use_video_port=True)
+            print("after capture_sequence")
             for result in inference.run(args.num_frames):
                 faces = face_detection.get_faces(result)
                 # annotator.clear()
