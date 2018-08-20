@@ -142,7 +142,6 @@ def streams():
             processor.event.set()
         else:
             # When the pool is starved, wait a while for it to refill
-            print("sleep")
             time.sleep(0.1)
             # ignore the frame
 
@@ -183,8 +182,8 @@ def main():
             for result in inference.run(args.num_frames):
                 faces = face_detection.get_faces(result)
                 # annotator.clear()
-                for face in faces:
-                    annotator.bounding_box(transform(face.bounding_box), fill=0)
+                # for face in faces:
+                #     annotator.bounding_box(transform(face.bounding_box), fill=0)
                 # annotator.update()
                 if len(faces) > 0:
                     # start to identify the person
