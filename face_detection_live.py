@@ -33,7 +33,7 @@ import threading
 done = False
 hasCustomer = False
 lock = threading.Lock()
-pool = []
+# pool = []
 
 
 class ImageProcessor(threading.Thread):
@@ -154,14 +154,14 @@ def main():
     args = parser.parse_args()
 
 
-    pool = [ImageProcessor() for i in range(4)]
+    # pool = [ImageProcessor() for i in range(4)]
 
     # Forced sensor mode, 1640x1232, full FoV. See:
     # https://picamera.readthedocs.io/en/release-1.13/fov.html#sensor-modes
     # This is the resolution inference run on.
     with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camera:
         camera.start_preview()
-        time.sleep(2)
+        # time.sleep(2)
 
         # Annotator renders in software so use a smaller size and scale results
         # for increased performace.
@@ -205,8 +205,8 @@ def main():
 if __name__ == '__main__':
     main()
 
-    while pool:
-        with lock:
-            processor = pool.pop()
-            processor.terminated = True
-            processor.join()
+    # while pool:
+    #     with lock:
+    #         processor = pool.pop()
+    #         processor.terminated = True
+    #         processor.join()
