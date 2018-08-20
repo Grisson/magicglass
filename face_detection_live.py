@@ -131,6 +131,7 @@ def avg_joy_score(faces):
 
 
 def streams():
+    print("Entry streams")
     while not done and hasCustomer:
         print("Pop processor") 
         with lock:
@@ -146,6 +147,7 @@ def streams():
             # time.sleep(0.1)
             # ignore the frame
             pass
+    print("Leave streams")
 
 
 def main():
