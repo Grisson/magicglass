@@ -23,7 +23,7 @@ import argparse
 
 from aiy.vision.inference import CameraInference
 from aiy.vision.models import face_detection
-from aiy.vision.annotator import Annotator
+#from aiy.vision.annotator import Annotator
 from picamera import PiCamera
 import http.client, urllib.request, urllib.parse, urllib.error, base64
 
@@ -165,7 +165,7 @@ def main():
 
         # Annotator renders in software so use a smaller size and scale results
         # for increased performace.
-        annotator = Annotator(camera, dimensions=(320, 240))
+        # annotator = Annotator(camera, dimensions=(320, 240))
         scale_x = 320 / 1640
         scale_y = 240 / 1232
 
@@ -179,10 +179,10 @@ def main():
         with CameraInference(face_detection.model()) as inference:
             for result in inference.run(args.num_frames):
                 faces = face_detection.get_faces(result)
-                annotator.clear()
+                # annotator.clear()
                 for face in faces:
                     annotator.bounding_box(transform(face.bounding_box), fill=0)
-                annotator.update()
+                # annotator.update()
                 if len(faces) > 0:
                     # start to identify the person
                     print("Has Customer")
