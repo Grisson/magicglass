@@ -163,7 +163,7 @@ def main():
     # This is the resolution inference run on.
     with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camera:
         camera.start_preview()
-
+        time.sleep(2)
         camera.capture_sequence(streams(), use_video_port=True)
 
         # Annotator renders in software so use a smaller size and scale results
