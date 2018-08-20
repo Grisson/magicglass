@@ -26,6 +26,9 @@ from aiy.vision.models import face_detection
 #from aiy.vision.annotator import Annotator
 from picamera import PiCamera
 import http.client, urllib.request, urllib.parse, urllib.error, base64
+import io
+import time
+import threading
 
 done = False
 hasCustomer = False
