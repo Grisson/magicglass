@@ -177,8 +177,8 @@ def main():
                     scale_y * (y + height))
 
         with CameraInference(face_detection.model()) as inference:
-            camera.capture_sequence(streams(), use_video_port=True)
-            print("after capture_sequence")
+            # camera.capture_sequence(streams(), use_video_port=True)
+            # print("after capture_sequence")
             for result in inference.run(args.num_frames):
                 faces = face_detection.get_faces(result)
                 # annotator.clear()
