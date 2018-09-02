@@ -1,0 +1,1 @@
+sudo systemctl stop joy_detection_demo.service
