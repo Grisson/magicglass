@@ -138,7 +138,7 @@ def GetFaceId(image):
         'returnFaceAttributes': 'age,gender',
     })
 
-    print(image.length())
+    print(len(image))
     # body = ""
 
     try:
