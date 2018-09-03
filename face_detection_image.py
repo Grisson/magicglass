@@ -201,6 +201,7 @@ def InfoVendingMachine(machineId, userId):
     conn.request("POST", "/api/Customer", body, headers)
     response = conn.getresponse()
     data = response.read()
+    conn.close()
 
     print(data)
 
