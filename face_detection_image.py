@@ -123,7 +123,33 @@ class Animator(Service):
 
 
 
+def GetFaceId(image):
+    headers = {
+        # Request headers
+        'Content-Type': 'application/octet-stream',
+        'Ocp-Apim-Subscription-Key': '',
+    }
 
+    params = urllib.parse.urlencode({
+        # Request parameters
+        'returnFaceId': 'true',
+        'returnFaceLandmarks': 'true',
+        'returnFaceAttributes': 'age,gender',
+    })
+
+    body = ""
+
+    try:
+        conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
+        conn.request("POST", "/face/v1.0/detect?%s" % params, image, headers)
+        response = conn.getresponse()
+        data = response.read()
+        conn.close()
+
+        return data
+
+    except Exception as e:
+        print("[Errno {0}] {1}".format(e.errno, e.strerror)) 
 
 
 def main():
@@ -138,7 +164,8 @@ def main():
     leds.update(Leds.privacy_on())
 
 
-    with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camera:
+    # with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camera:
+    with PiCamera() as camera:
         camera.start_preview()
 
         with CameraInference(face_detection.model()) as inference:
@@ -148,6 +175,8 @@ def main():
                     stream = io.BytesIO()
                     camera.capture(stream, format='jpeg')
                     stream.seek(0)
+
+                    print(GetFaceId(stream))
                     # image = Image.open(stream)
                     # break
                 else:
