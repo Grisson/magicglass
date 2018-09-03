@@ -253,7 +253,7 @@ def main():
                         print(userId)
                     # break
                 else:
-                    if noCustomerDelay >= 10:
+                    if noCustomerDelay >= 500:
                         leds.update(Leds.rgb_on(WHITE))
                         InfoVendingMachine("10", '')
                         noCustomerDelay = 0;
