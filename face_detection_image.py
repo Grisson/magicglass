@@ -148,7 +148,7 @@ def main():
                     stream = io.BytesIO()
                     camera.capture(stream, format='jpeg')
                     stream.seek(0)
-                    image = Image.open(stream)
+                    # image = Image.open(stream)
                     # break
                 else:
                     leds.update(Leds.rgb_on(GREEN))
