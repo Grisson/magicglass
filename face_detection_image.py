@@ -123,6 +123,9 @@ class Animator(Service):
 
 
 
+
+
+
 def main():
     """Face detection camera inference example."""
     parser = argparse.ArgumentParser()
@@ -141,7 +144,10 @@ def main():
             for result in inference.run():
                 if len(face_detection.get_faces(result)) >= 1:
                     leds.update(Leds.rgb_on(RED))
-                    camer.capture('faces.jpg')
+                    stream = io.BytesIO()
+                    camera.capture(stream, format='jpeg')
+                    stream.seek(0)
+                    image = Image.open(stream)
                     break
                 else:
                     leds.update(Leds.rgb_on(GREEN))
