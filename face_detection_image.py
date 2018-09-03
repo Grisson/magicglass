@@ -148,11 +148,11 @@ def main():
                     scale_y * (y + height))
 
 
-         with CameraInference(face_detection.model()) as inference:
-            for result in inference.run():
-                if len(face_detection.get_faces(result)) >= 1:
-                    camera.capture('faces.jpg')
-                    break
+         # with CameraInference(face_detection.model()) as inference:
+         #    for result in inference.run():
+         #        if len(face_detection.get_faces(result)) >= 1:
+         #            camera.capture('faces.jpg')
+         #            break
 
 
         # with ImageInference(face_detection.model()) as inference:
