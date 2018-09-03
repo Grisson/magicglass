@@ -47,6 +47,15 @@ from picamera import PiCamera
 JOY_COLOR = (255, 70, 0)
 SAD_COLOR = (0, 0, 64)
 
+RED = (0xFF, 0x00, 0x00)
+GREEN = (0x00, 0xFF, 0x00)
+YELLOW = (0xFF, 0xFF, 0x00)
+BLUE = (0x00, 0x00, 0xFF)
+PURPLE = (0xFF, 0x00, 0xFF)
+CYAN = (0x00, 0xFF, 0xFF)
+WHITE = (0xFF, 0xFF, 0xFF)
+
+
 def avg_joy_score(faces):
     if faces:
         return sum(face.joy_score for face in faces) / len(faces)
@@ -122,15 +131,32 @@ def main():
     args = parser.parse_args()
 
     leds = Leds()
+    leds.update(Leds.privacy_on())
 
 
-    for _ in range(3):
-        print('Privacy: On (brightness=default)')
-        leds.update(Leds.privacy_on())
-        time.sleep(1)
-        print('Privacy: Off')
-        leds.update(Leds.privacy_off())
-        time.sleep(1)
+    with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camer:
+        camer.start_preview()
+
+        with CameraInference(face_detection.model()) as inference:
+            for result in inference.run():
+                if len(face_detection.get_faces(result)) >= 1:
+                    leds.update(Leds.rgb_on(RED))
+                    camer.capture('faces.jpg')
+                    break
+                else:
+                    leds.update(Leds.rgb_on(GREEN))
+
+        camer.stop_preview()
+
+    leds.reset()
+
+    # for _ in range(3):
+    #     print('Privacy: On (brightness=default)')
+    #     leds.update(Leds.privacy_on())
+    #     time.sleep(1)
+    #     print('Privacy: Off')
+    #     leds.update(Leds.privacy_off())
+    #     time.sleep(1)
         # player = stack.enter_context(Player(gpio=BUZZER_GPIO, bpm=10))
         # animator = stack.enter_context(leds)
         # stack.enter_context(PrivacyLed(leds))
@@ -189,7 +215,6 @@ def main():
                     #     (inference.count, inference.rate, len(faces), avg_joy_score(faces)))
 
             # camera.stop_preview()
-    leds.reset()
 
 
 if __name__ == '__main__':
