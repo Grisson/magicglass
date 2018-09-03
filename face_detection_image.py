@@ -133,7 +133,6 @@ def GetFaceId(imageName):
             # Request headers
             'Content-Type': 'application/octet-stream',
             'Ocp-Apim-Subscription-Key': '6e0c4534ea4d47f583dd4c6a99606ccc',
-            # "Content-Length": sys.getsizeof(image),
         }
 
         params = urllib.parse.urlencode({
@@ -143,29 +142,23 @@ def GetFaceId(imageName):
             'returnFaceAttributes': 'age,gender',
         })
 
-        # print(sys.getsizeof(image))
-        # body = ""
-
-        # i = Image.open(image)
 
         try:
             conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
             conn.request("POST", "/face/v1.0/detect?%s" % params, body, headers)
             response = conn.getresponse()
-            # data = response.read()
             data = response.read()
             conn.close()
 
-            print(data)
-
             parsed_json = json.loads(data.decode('utf8'))
 
-            print(len(parsed_json))
+            # print(len(parsed_json))
 
+            faceIds = []
             for face in parsed_json:
-                print(face['faceId'])
+                faceIds.append(face['faceId'])
 
-            return parsed_json
+            return faceIds
 
         except Exception as e:
             print("[Errno {0}] {1}".format(e.errno, e.strerror)) 
@@ -197,9 +190,9 @@ def main():
                     # stream.seek(0)
 
                     camera.capture('faces.jpg')
-                    GetFaceId('faces.jpg')
+                    faces = GetFaceId('faces.jpg')
 
-                    print("GetFaceId")
+                    print(faces)
                     # image = Image.open(stream)
                     break
                 else:
