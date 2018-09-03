@@ -216,6 +216,8 @@ def main():
     leds.reset()
     leds.update(Leds.privacy_on())
 
+    noCustomerDelay = 0;
+
 
     with PiCamera(sensor_mode=4, resolution=(1640, 1232)) as camera:
     # with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camera:
@@ -225,6 +227,7 @@ def main():
         with CameraInference(face_detection.model()) as inference:
             for result in inference.run():
                 if len(face_detection.get_faces(result)) >= 1:
+                    noCustomerDelay = 0
                     leds.update(Leds.rgb_on(GREEN))
                     # stream = io.BytesIO()
                     # camera.capture(stream, format='jpeg')
@@ -244,13 +247,18 @@ def main():
                                 if(highestScore < candidate['confidence']):
                                     userId = candidate['personId']
 
+
                         InfoVendingMachine("10", userId)
 
                         print(userId)
                     # break
                 else:
-                    leds.update(Leds.rgb_on(WHITE))
-                    # InfoVendingMachine("10", '')
+                    if noCustomerDelay >= 10:
+                        leds.update(Leds.rgb_on(WHITE))
+                        InfoVendingMachine("10", '')
+                        noCustomerDelay = 0;
+                    else:
+                        noCustomerDelay += 1;
 
 
         camera.stop_preview()
