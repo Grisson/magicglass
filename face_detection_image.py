@@ -152,12 +152,13 @@ def GetFaceId(imageName):
             conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
             conn.request("POST", "/face/v1.0/detect?%s" % params, body, headers)
             response = conn.getresponse()
-            data = response.read()
+            # data = response.read()
+            data = response.json()
             conn.close()
 
             print(data)
 
-            parsed_json = json.loads(data)
+            # parsed_json = json.loads(data)
 
             print(len(data))
 
