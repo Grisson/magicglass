@@ -125,37 +125,39 @@ class Animator(Service):
 
 
 
-def GetFaceId(image):
-    headers = {
-        # Request headers
-        'Content-Type': 'application/octet-stream',
-        'Ocp-Apim-Subscription-Key': '6e0c4534ea4d47f583dd4c6a99606ccc',
-        "Content-Length": sys.getsizeof(image),
-    }
+def GetFaceId(imageName):
+    with open(imageName, "rb") as f:
+        body = f.read()
+        headers = {
+            # Request headers
+            'Content-Type': 'application/octet-stream',
+            'Ocp-Apim-Subscription-Key': '6e0c4534ea4d47f583dd4c6a99606ccc',
+            # "Content-Length": sys.getsizeof(image),
+        }
 
-    params = urllib.parse.urlencode({
-        # Request parameters
-        'returnFaceId': 'true',
-        'returnFaceLandmarks': 'true',
-        'returnFaceAttributes': 'age,gender',
-    })
+        params = urllib.parse.urlencode({
+            # Request parameters
+            'returnFaceId': 'true',
+            'returnFaceLandmarks': 'true',
+            'returnFaceAttributes': 'age,gender',
+        })
 
-    # print(sys.getsizeof(image))
-    # body = ""
+        # print(sys.getsizeof(image))
+        # body = ""
 
-    # i = Image.open(image)
+        # i = Image.open(image)
 
-    try:
-        conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
-        conn.request("POST", "/face/v1.0/detect?%s" % params, image, headers)
-        response = conn.getresponse()
-        data = response.read()
-        conn.close()
+        try:
+            conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
+            conn.request("POST", "/face/v1.0/detect?%s" % params, body, headers)
+            response = conn.getresponse()
+            data = response.read()
+            conn.close()
+            print(data)
+            return data
 
-        return data
-
-    except Exception as e:
-        print("[Errno {0}] {1}".format(e.errno, e.strerror)) 
+        except Exception as e:
+            print("[Errno {0}] {1}".format(e.errno, e.strerror)) 
 
 
 def main():
@@ -178,12 +180,15 @@ def main():
         with CameraInference(face_detection.model()) as inference:
             for result in inference.run():
                 if len(face_detection.get_faces(result)) >= 1:
-                    leds.update(Leds.rgb_on(RED))
-                    stream = io.BytesIO()
-                    camera.capture(stream, format='jpeg')
-                    stream.seek(0)
+                    # leds.update(Leds.rgb_on(RED))
+                    # stream = io.BytesIO()
+                    # camera.capture(stream, format='jpeg')
+                    # stream.seek(0)
 
-                    print(GetFaceId(stream))
+                    camera.capture('faces.jpg')
+                    GetFaceId('faces.jpg')
+
+                    print("GetFaceId")
                     # image = Image.open(stream)
                     break
                 else:
