@@ -211,7 +211,7 @@ def main():
         with CameraInference(face_detection.model()) as inference:
             for result in inference.run():
                 if len(face_detection.get_faces(result)) >= 1:
-                    leds.update(Leds.rgb_on(RED))
+                    leds.update(Leds.rgb_on(GREEN))
                     # stream = io.BytesIO()
                     # camera.capture(stream, format='jpeg')
                     # stream.seek(0)
@@ -227,13 +227,13 @@ def main():
                         userId = ""
                         for face in result:
                             for candidate in face['candidates']:
-                                if(highestScore < candidates['confidence']):
-                                    userId = candidates['personId']
+                                if(highestScore < candidate['confidence']):
+                                    userId = candidate['personId']
 
                         print(userId)
                     # break
                 else:
-                    leds.update(Leds.rgb_on(GREEN))
+                    leds.update(Leds.rgb_off())
 
         camera.stop_preview()
 
