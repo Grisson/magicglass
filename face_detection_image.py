@@ -157,12 +157,12 @@ def GetFaceId(imageName):
 
             print(data)
 
-            # parsed_json = json.loads(data)
+            parsed_json = json.loads(data)
 
             print(len(data))
 
             for face in data:
-                print(face[faceId])
+                print(face['faceId'])
 
             return data
 
