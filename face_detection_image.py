@@ -165,8 +165,9 @@ def main():
     leds.update(Leds.privacy_on())
 
 
+    with PiCamera(sensor_mode=4, resolution=(1640, 1232)) as camera:
     # with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camera:
-    with PiCamera() as camera:
+    # with PiCamera() as camera:
         camera.start_preview()
 
         with CameraInference(face_detection.model()) as inference:
