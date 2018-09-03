@@ -158,14 +158,14 @@ def GetFaceId(imageName):
 
             print(data)
 
-            # parsed_json = json.loads(data)
+            parsed_json = json.loads(data.decode('utf8'))
 
-            print(len(data))
+            print(len(parsed_json))
 
-            for face in data:
+            for face in parsed_json:
                 print(face['faceId'])
 
-            return data
+            return parsed_json
 
         except Exception as e:
             print("[Errno {0}] {1}".format(e.errno, e.strerror)) 
