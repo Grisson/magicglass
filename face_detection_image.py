@@ -130,6 +130,7 @@ def GetFaceId(image):
         # Request headers
         'Content-Type': 'application/octet-stream',
         'Ocp-Apim-Subscription-Key': '6e0c4534ea4d47f583dd4c6a99606ccc',
+        "Content-Length": sys.getsizeof(image),
     }
 
     params = urllib.parse.urlencode({
@@ -139,14 +140,14 @@ def GetFaceId(image):
         'returnFaceAttributes': 'age,gender',
     })
 
-    print(sys.getsizeof(image))
+    # print(sys.getsizeof(image))
     # body = ""
 
-    i = Image.open(image)
+    # i = Image.open(image)
 
     try:
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
-        conn.request("POST", "/face/v1.0/detect?%s" % params, data=i, headers=headers)
+        conn.request("POST", "/face/v1.0/detect?%s" % params, image, headers)
         response = conn.getresponse()
         data = response.read()
         conn.close()
