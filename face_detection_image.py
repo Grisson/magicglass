@@ -250,7 +250,7 @@ def main():
                     # break
                 else:
                     leds.update(Leds.rgb_on(WHITE))
-                    InfoVendingMachine("10", '')
+                    # InfoVendingMachine("10", '')
 
 
         camera.stop_preview()
