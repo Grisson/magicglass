@@ -192,10 +192,17 @@ def GetUserId(faceId):
 
 
 def InfoVendingMachine(machineId, userId):
+    headers = {
+        # Request headers
+        'Content-Type': 'application/json',
+    }
     body = '{ "MachineID": "' + machineId + '", "CustomerID": "' + userId + '"}'
     conn = http.client.HTTPSConnection('magicglass.azurewebsites.net')
-    conn.request("POST", "/api/Customer", body)
+    conn.request("POST", "/api/Customer", body, headers)
     response = conn.getresponse()
+    data = response.read()
+
+    print(data)
 
 
 def main():
