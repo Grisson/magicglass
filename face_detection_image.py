@@ -181,10 +181,9 @@ def GetUserId(faceId):
         response = conn.getresponse()
         data = response.read()
         conn.close()
+
         parsed_json = json.loads(data.decode('utf8'))
-
-
-        print(parsed_json)
+        # print(parsed_json)
 
         return parsed_json
 
@@ -217,14 +216,22 @@ def main():
                     # camera.capture(stream, format='jpeg')
                     # stream.seek(0)
                     camera.capture('faces.jpg')
-                    faces = GetFaceId('faces.jpg')
 
+                    faces = GetFaceId('faces.jpg')
                     print(faces)
                     if(len(faces) > 0):
-                        userID = GetUserId(faces[0])
-                        print(userID)
-                    # image = Image.open(stream)
-                    break
+                        result = GetUserId(faces[0])
+                        print(result)
+
+                        highestScore = 0
+                        userId = ""
+                        for face in result:
+                            for candidate in face['candidates']:
+                                if(highestScore < candidates['confidence']):
+                                    userId = candidates['personId']
+
+                        print(userId)
+                    # break
                 else:
                     leds.update(Leds.rgb_on(GREEN))
 
