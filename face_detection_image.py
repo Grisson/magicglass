@@ -33,6 +33,7 @@ import sys
 import threading
 import time
 import http.client, urllib.request, urllib.parse, urllib.error, base64
+from PIL import Image
 
 from aiy.vision.leds import Leds
 from aiy.vision.leds import Pattern
@@ -138,8 +139,10 @@ def GetFaceId(image):
         'returnFaceAttributes': 'age,gender',
     })
 
-    print(len(image))
+    print(sys.getsizeof(image))
     # body = ""
+
+    image = Image.open(stream)
 
     try:
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
