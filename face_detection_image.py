@@ -32,6 +32,7 @@ import signal
 import sys
 import threading
 import time
+import http.client, urllib.request, urllib.parse, urllib.error, base64
 
 from aiy.vision.leds import Leds
 from aiy.vision.leds import Pattern
