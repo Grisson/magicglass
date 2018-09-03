@@ -121,17 +121,16 @@ def main():
         help='Sets the number of frames to run for, otherwise runs forever.')
     args = parser.parse_args()
 
-    # leds = Leds()
+    leds = Leds()
 
-    with Leds() as leds:
 
-        for _ in range(3):
-            print('Privacy: On (brightness=default)')
-            leds.update(Leds.privacy_on())
-            time.sleep(1)
-            print('Privacy: Off')
-            leds.update(Leds.privacy_off())
-            time.sleep(1)
+    for _ in range(3):
+        print('Privacy: On (brightness=default)')
+        leds.update(Leds.privacy_on())
+        time.sleep(1)
+        print('Privacy: Off')
+        leds.update(Leds.privacy_off())
+        time.sleep(1)
         # player = stack.enter_context(Player(gpio=BUZZER_GPIO, bpm=10))
         # animator = stack.enter_context(leds)
         # stack.enter_context(PrivacyLed(leds))
@@ -190,6 +189,7 @@ def main():
                     #     (inference.count, inference.rate, len(faces), avg_joy_score(faces)))
 
             # camera.stop_preview()
+    leds.reset()
 
 
 if __name__ == '__main__':
