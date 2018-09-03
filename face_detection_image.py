@@ -178,7 +178,7 @@ def main():
                     camera.capture(stream, format='jpeg')
                     stream.seek(0)
 
-                    print(GetFaceId(bytearray(stream)))
+                    print(GetFaceId(stream))
                     # image = Image.open(stream)
                     break
                 else:
