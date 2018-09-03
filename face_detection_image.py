@@ -192,7 +192,10 @@ def GetUserId(faceId):
 
 
 def InfoVendingMachine(machineId, userId):
-    pass
+    body = '{ "MachineID": "' + machineId + '", "CustomerID": "' + userId + '"}'
+    conn = http.client.HTTPSConnection('magicglass.azurewebsites.net')
+    conn.request("POST", "/api/Customer", body)
+    response = conn.getresponse()
 
 
 def main():
@@ -234,10 +237,14 @@ def main():
                                 if(highestScore < candidate['confidence']):
                                     userId = candidate['personId']
 
+                        InfoVendingMachine("10", userId)
+
                         print(userId)
                     # break
                 else:
                     leds.update(Leds.rgb_on(WHITE))
+                    InfoVendingMachine("10", '')
+
 
         camera.stop_preview()
 
