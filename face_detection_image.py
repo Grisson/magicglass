@@ -33,9 +33,10 @@ import sys
 import threading
 import time
 
-from aiy.leds import Leds
-from aiy.leds import Pattern
-from aiy.leds import PrivacyLed
+from aiy.vision.leds import Leds
+from aiy.vision.leds import Pattern
+from aiy.vision.leds import PrivacyLed
+from aiy.vision.leds import RgbLeds
 
 from aiy.vision.inference import CameraInference
 from aiy.vision.models import face_detection
@@ -120,32 +121,41 @@ def main():
         help='Sets the number of frames to run for, otherwise runs forever.')
     args = parser.parse_args()
 
-    leds = Leds()
+    # leds = Leds()
 
     with contextlib.ExitStack() as stack:
+        leds = stack.enter_context(Leds())
+
+        for _ in range(3):
+            print('Privacy: On (brightness=default)')
+            eds.update(Leds.privacy_on())
+            time.sleep(1)
+            print('Privacy: Off')
+            leds.update(Leds.privacy_off())
+            time.sleep(1)
         # player = stack.enter_context(Player(gpio=BUZZER_GPIO, bpm=10))
         # animator = stack.enter_context(leds)
-        stack.enter_context(PrivacyLed(leds))
-        camera = stack.enter_context(PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30))
+        # stack.enter_context(PrivacyLed(leds))
+        # camera = stack.enter_context(PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30))
 
-        # Forced sensor mode, 1640x1232, full FoV. See:
-        # https://picamera.readthedocs.io/en/release-1.13/fov.html#sensor-modes
-        # This is the resolution inference run on.
-        # with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camera:
-        camera.start_preview()
+        # # Forced sensor mode, 1640x1232, full FoV. See:
+        # # https://picamera.readthedocs.io/en/release-1.13/fov.html#sensor-modes
+        # # This is the resolution inference run on.
+        # # with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camera:
+        # camera.start_preview()
 
-        # Annotator renders in software so use a smaller size and scale results
-        # for increased performace.
-        annotator = Annotator(camera, dimensions=(320, 240))
-        scale_x = 320 / 1640
-        scale_y = 240 / 1232
+        # # Annotator renders in software so use a smaller size and scale results
+        # # for increased performace.
+        # annotator = Annotator(camera, dimensions=(320, 240))
+        # scale_x = 320 / 1640
+        # scale_y = 240 / 1232
 
-        # Incoming boxes are of the form (x, y, width, height). Scale and
-        # transform to the form (x1, y1, x2, y2).
-        def transform(bounding_box):
-            x, y, width, height = bounding_box
-            return (scale_x * x, scale_y * y, scale_x * (x + width),
-                    scale_y * (y + height))
+        # # Incoming boxes are of the form (x, y, width, height). Scale and
+        # # transform to the form (x1, y1, x2, y2).
+        # def transform(bounding_box):
+        #     x, y, width, height = bounding_box
+        #     return (scale_x * x, scale_y * y, scale_x * (x + width),
+        #             scale_y * (y + height))
 
 
          # with CameraInference(face_detection.model()) as inference:
@@ -180,7 +190,7 @@ def main():
                     # print('#%05d (%5.2f fps): num_faces=%d, avg_joy_score=%.2f' %
                     #     (inference.count, inference.rate, len(faces), avg_joy_score(faces)))
 
-            camera.stop_preview()
+            # camera.stop_preview()
 
 
 if __name__ == '__main__':
