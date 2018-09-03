@@ -164,6 +164,34 @@ def GetFaceId(imageName):
             print("[Errno {0}] {1}".format(e.errno, e.strerror)) 
 
 
+def GetUserId(faceId):
+    headers = {
+        # Request headers
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': '6e0c4534ea4d47f583dd4c6a99606ccc',
+    }
+
+    params = urllib.parse.urlencode({})
+
+    body = '{"personGroupId":"everyone","faceIds":["' + faceId + '"],"maxNumOfCandidatesReturned":1,"confidenceThreshold":0.5}'
+
+    try:
+        conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
+        conn.request("POST", "/face/v1.0/identify?%s" % params, body, headers)
+        response = conn.getresponse()
+        data = response.read()
+        conn.close()
+        parsed_json = json.loads(data.decode('utf8'))
+
+
+        print(parsed_json)
+
+        return parsed_json
+
+    except Exception as e:
+        print("[Errno {0}] {1}".format(e.errno, e.strerror))
+
+
 def main():
     """Face detection camera inference example."""
     parser = argparse.ArgumentParser()
@@ -188,11 +216,13 @@ def main():
                     # stream = io.BytesIO()
                     # camera.capture(stream, format='jpeg')
                     # stream.seek(0)
-
                     camera.capture('faces.jpg')
                     faces = GetFaceId('faces.jpg')
 
                     print(faces)
+                    if(len(faces) > 0):
+                        userID = GetUserId(faces[0])
+                        print(userID)
                     # image = Image.open(stream)
                     break
                 else:
