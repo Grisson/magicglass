@@ -134,11 +134,12 @@ def main():
     args = parser.parse_args()
 
     leds = Leds()
+    leds.reset()
     leds.update(Leds.privacy_on())
 
 
-    with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camer:
-        camer.start_preview()
+    with PiCamera(sensor_mode=4, resolution=(1640, 1232), framerate=30) as camera:
+        camera.start_preview()
 
         with CameraInference(face_detection.model()) as inference:
             for result in inference.run():
@@ -148,7 +149,7 @@ def main():
                     camera.capture(stream, format='jpeg')
                     stream.seek(0)
                     image = Image.open(stream)
-                    break
+                    # break
                 else:
                     leds.update(Leds.rgb_on(GREEN))
 
