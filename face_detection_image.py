@@ -34,6 +34,7 @@ import threading
 import time
 import http.client, urllib.request, urllib.parse, urllib.error, base64
 from PIL import Image
+import json
 
 from aiy.vision.leds import Leds
 from aiy.vision.leds import Pattern
@@ -153,7 +154,16 @@ def GetFaceId(imageName):
             response = conn.getresponse()
             data = response.read()
             conn.close()
+
             print(data)
+
+            parsed_json = json.loads(data)
+
+            print(len(parsed_json))
+
+            for face in parsed_json:
+                print(face[faceId])
+
             return data
 
         except Exception as e:
@@ -180,7 +190,7 @@ def main():
         with CameraInference(face_detection.model()) as inference:
             for result in inference.run():
                 if len(face_detection.get_faces(result)) >= 1:
-                    # leds.update(Leds.rgb_on(RED))
+                    leds.update(Leds.rgb_on(RED))
                     # stream = io.BytesIO()
                     # camera.capture(stream, format='jpeg')
                     # stream.seek(0)
