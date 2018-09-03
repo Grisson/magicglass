@@ -153,7 +153,7 @@ def GetFaceId(imageName):
             conn.request("POST", "/face/v1.0/detect?%s" % params, body, headers)
             response = conn.getresponse()
             # data = response.read()
-            data = response.json()
+            data = response.read()
             conn.close()
 
             print(data)
