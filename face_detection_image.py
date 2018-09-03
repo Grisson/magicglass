@@ -40,7 +40,7 @@ from aiy.vision.leds import RgbLeds
 
 from aiy.vision.inference import CameraInference
 from aiy.vision.models import face_detection
-from aiy.vision.annotator import Annotator
+# from aiy.vision.annotator import Annotator
 from picamera import PiCamera
 
 
@@ -123,12 +123,11 @@ def main():
 
     # leds = Leds()
 
-    with contextlib.ExitStack() as stack:
-        leds = stack.enter_context(Leds())
+    with Leds() as leds:
 
         for _ in range(3):
             print('Privacy: On (brightness=default)')
-            eds.update(Leds.privacy_on())
+            leds.update(Leds.privacy_on())
             time.sleep(1)
             print('Privacy: Off')
             leds.update(Leds.privacy_off())
