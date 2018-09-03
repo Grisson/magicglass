@@ -191,6 +191,10 @@ def GetUserId(faceId):
         print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
 
+def InfoVendingMachine(machineId, userId):
+    pass
+
+
 def main():
     """Face detection camera inference example."""
     parser = argparse.ArgumentParser()
@@ -233,7 +237,7 @@ def main():
                         print(userId)
                     # break
                 else:
-                    leds.update(Leds.rgb_off())
+                    leds.update(Leds.rgb_on(WHITE))
 
         camera.stop_preview()
 
