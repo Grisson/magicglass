@@ -177,13 +177,13 @@ def main():
                     camera.capture(stream, format='jpeg')
                     stream.seek(0)
 
-                    print(GetFaceId(stream))
+                    print(GetFaceId(bytearray(stream)))
                     # image = Image.open(stream)
                     break
                 else:
                     leds.update(Leds.rgb_on(GREEN))
 
-        camer.stop_preview()
+        camera.stop_preview()
 
     leds.reset()
 
