@@ -178,7 +178,7 @@ def main():
 
                     print(GetFaceId(stream))
                     # image = Image.open(stream)
-                    # break
+                    break
                 else:
                     leds.update(Leds.rgb_on(GREEN))
 
